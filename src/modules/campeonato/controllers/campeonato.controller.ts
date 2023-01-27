@@ -764,7 +764,7 @@ export class CampeonatoController {
   ): Promise<Futebol.Heatmap[]> {
     await this.heatmapAtletaByIdService.execute(jogador);
     return res.redirect(
-      'https://recrieprodutora.com.br/heatmap/campeonato/jogador.html',
+      `${process.env.URL_STORAGE}/heatmap/campeonato/jogador.html`,
     );
   }
 
@@ -820,7 +820,7 @@ export class CampeonatoController {
   @Get('heatmap/mandante/')
   async heatmapMandante(@Res() res): Promise<Futebol.Heatmap[]> {
     return res.redirect(
-      'https://recrieprodutora.com.br/heatmap/campeonato/mandante.html',
+      `${process.env.URL_STORAGE}/heatmap/campeonato/mandante.html`,
     );
   }
 
@@ -849,7 +849,7 @@ export class CampeonatoController {
   @Get('heatmap/visitante/')
   async heatmapVisitante(@Res() res): Promise<Futebol.Heatmap[]> {
     return res.redirect(
-      'https://recrieprodutora.com.br/heatmap/campeonato/visitante.html',
+      `${process.env.URL_STORAGE}/heatmap/campeonato/visitante.html`,
     );
   }
 

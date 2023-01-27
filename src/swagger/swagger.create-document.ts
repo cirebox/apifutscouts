@@ -6,7 +6,7 @@ export function createDocument(app: INestApplication): OpenAPIObject {
   const builder = new DocumentBuilder()
     .setTitle(SWAGGER_CONFIG.title)
     .setDescription(SWAGGER_CONFIG.description)
-    .addServer('https://recrieprodutora.com.br/futbox')
+    .addServer(`${process.env.URL_STORAGE}/futbox`)
     .setVersion(SWAGGER_CONFIG.version);
   for (const tag of SWAGGER_CONFIG.tags) {
     builder.addTag(tag);
