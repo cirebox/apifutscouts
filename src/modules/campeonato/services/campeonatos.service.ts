@@ -30,7 +30,9 @@ export class CampeonatosService {
         )[0];
 
         if (!retorno) {
-          throw new NotFoundException('Não foi possível definar a competição');
+          throw new NotFoundException(
+            'Não foi possível definar a competição ou competição indisponivel',
+          );
         }
 
         this.globalService.campeonatoId = retorno.id;
