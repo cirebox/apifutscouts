@@ -1,0 +1,43 @@
+{
+  "files.exclude": {
+    "**/*.freezed.dart": true,
+    "**/*.g.dart": true,
+    "**/*.mocks.dart": true,
+    "web/": true,
+    "node_modules/": true,
+    "test/": true,
+    "pnpm-lock.yaml": true,
+    "dist/": true,
+    ".eslintrc.js": true,
+    ".prettierrc": true,
+    "windows/": true,
+    "android/": false,
+    "ios/": true,
+    "build/": true,
+    
+    ".idea/": true,
+    ".dart_tool": true,
+    ".fvm": true,
+    "coverage": true,
+    "utils": true,  
+    ".flutter-plugins": true,
+    ".flutter-plugins-dependencies": true,
+    "onyticket.iml": true,
+    ".metadata": true,
+    "LICENSE": true,
+  },
+  "explorer.compactFolders": false,
+  "dart.flutterSdkPath": "C:\\Users\\eric_\\fvm\\versions\\stable",
+  "dart.flutterSdkPaths": ["C:/Users/eric_/fvm/versions/3.3.2"],
+  // Remove .fvm files from search
+  "search.exclude": {
+    "**/.fvm": true
+  },
+  // Remove from file watching
+  "files.watcherExclude": {
+    "**/.fvm": true
+  },
+  "editor.codeActionsOnSave": {
+  
+  }
+}
