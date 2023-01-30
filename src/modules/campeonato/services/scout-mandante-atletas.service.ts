@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
 import { GlobalService } from 'src/modules/shared/services/global.services';
 
@@ -15,6 +15,18 @@ export class ScoutMandanteAtletasService {
 
   async execute(): Promise<Futebol.ScoutJogador[]> {
     try {
+      if (!this.globalService.campeonatoId) {
+        throw new NotFoundException('Nenhum campeonato foi definido');
+      }
+
+      if (!this.globalService.partidaId) {
+        throw new NotFoundException('Nenhuma partida foi definida');
+      }
+
+      if (!this.globalService.equipeId) {
+        throw new NotFoundException('Nenhuma equipe foi definida');
+      }
+
       const response = await this.apiFutebolProvider.scoutAtletas();
 
       const retorno = [];
@@ -85,7 +97,7 @@ export class ScoutMandanteAtletasService {
       );
       return retorno;
     } catch (error) {
-      this.logger.error('Erro ao puxar scout de mandante atletas');
+      this.logger.error('Erro ao puxar scout de atletas mandante');
       console.log(error);
       throw error;
     }

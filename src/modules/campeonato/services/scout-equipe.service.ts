@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
 import { GlobalService } from 'src/modules/shared/services/global.services';
 
@@ -14,12 +14,22 @@ export class ScoutEquipeService {
 
   async execute(equipeId: number): Promise<Futebol.ScoutEquipe[]> {
     try {
+      if (!this.globalService.campeonatoId) {
+        throw new NotFoundException('Nenhum campeonato foi definido');
+      }
+
+      if (!this.globalService.partidaId) {
+        throw new NotFoundException('Nenhuma partida foi definida');
+      }
+
+      if (!equipeId) {
+        throw new NotFoundException('Nenhuma equipe foi definida');
+      }
+
       const filter: Futebol.OptionsPartida = {
         campeonatoId: this.globalService.campeonatoId,
-        campeonato: this.globalService.campeonato,
         partidaId: this.globalService.partidaId,
         equipeId: equipeId,
-        dirLogo: this.globalService.dirLogo,
       };
 
       return this.apiFutebolProvider.scoutEquipe(filter);

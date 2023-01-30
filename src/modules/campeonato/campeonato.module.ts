@@ -24,8 +24,6 @@ import { HeatmapVisitanteJsonService } from './services/heatmap-visitante-json.s
 import { HeatmapMadanteJsonService } from './services/heatmap-madante-json.service';
 import { HeatmapAtletaByIdService } from './services/heatmap-atleta-by-id.service';
 import { PartidaService } from './services/partida.service';
-import { HeatmapMandanteService } from './services/heatmap-mandante.service';
-import { HeatmapVisitanteService } from './services/heatmap-visitante.service';
 import { HeatmapJogadorService } from './services/heatmap-jogador.service';
 import { ScoutMandanteAtletasService } from './services/scout-mandante-atletas.service';
 import { ScoutVisitanteAtletasService } from './services/scout-visitante-atletas.service';
@@ -58,8 +56,6 @@ import { CampeonatosService } from './services/campeonatos.service';
     HeatmapMadanteJsonService,
     HeatmapAtletaByIdService,
     PartidaService,
-    HeatmapMandanteService,
-    HeatmapVisitanteService,
     HeatmapJogadorService,
     ScoutMandanteAtletasService,
     ScoutVisitanteAtletasService,

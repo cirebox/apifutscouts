@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
 
 @Injectable()
@@ -12,6 +12,10 @@ export class EquipeByIdService {
 
   async execute(equipeId: number): Promise<Futebol.Equipe> {
     try {
+      if (!equipeId) {
+        throw new NotFoundException('Nenhuma equipe foi definida');
+      }
+
       return this.apiFutebolProvider.equipe(equipeId);
     } catch (error) {
       this.logger.error('Erro ao puxar equipe por id', equipeId);

@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
 import { GlobalService } from 'src/modules/shared/services/global.services';
 
@@ -14,6 +14,14 @@ export class HeatmapAtletaByIdService {
 
   async execute(jogadorId: number): Promise<Futebol.Heatmap[]> {
     try {
+      if (!this.globalService.atletaId) {
+        throw new NotFoundException('Nenhum jogador foi definido');
+      }
+
+      if (!this.globalService.partidaId) {
+        throw new NotFoundException('Nenhuma partida foi definida');
+      }
+
       this.globalService.atletaId = jogadorId;
       return this.apiFutebolProvider.heatmapJodador(jogadorId);
     } catch (error) {

@@ -1,6 +1,11 @@
 import { Agent } from 'https';
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  OnModuleInit,
+} from '@nestjs/common';
 import { config } from 'dotenv';
 import { NestResponseBuilder } from '../../../../core/http/nest-response-builder';
 import { IAPIFutebolProvider } from '../interfaces/iapifutebol-provider';
@@ -439,6 +444,14 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
 
   async scoutAtleta(jogadorId: number): Promise<Futebol.ScoutJogador[]> {
     this.logger.debug('scoutJogador: ', jogadorId);
+
+    if (!this.globalService.campeonatoId) {
+      throw new NotFoundException('Nenhum campeonato foi definido');
+    }
+
+    if (!this.globalService.partidaId) {
+      throw new NotFoundException('Nenhuma partida foi definida');
+    }
 
     try {
       const url = `${this.apiFutebolV2Url}/Partida/obter-scout-jogador?Token=${this.token}

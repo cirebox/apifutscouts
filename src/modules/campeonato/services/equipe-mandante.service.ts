@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
 import { GlobalService } from 'src/modules/shared/services/global.services';
 
@@ -14,6 +14,10 @@ export class EquipeMandanteService {
 
   async execute(): Promise<Futebol.Equipe> {
     try {
+      if (!this.globalService.equipeMandanteId) {
+        throw new NotFoundException('Nenhuma equipe mandante foi definida');
+      }
+
       return this.apiFutebolProvider.equipe(
         this.globalService.equipeMandanteId,
       );

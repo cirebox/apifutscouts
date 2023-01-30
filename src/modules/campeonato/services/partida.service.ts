@@ -17,12 +17,6 @@ export class PartidaService {
       const retorno = [];
       const response = await this.apiFutebolProvider.partidasHoje();
 
-      if (!retorno || response.length === 0) {
-        throw new NotFoundException(
-          'Não foi possível definir partida ou partida não foi iniciada',
-        );
-      }
-
       await Promise.all(
         response.map(async (obj) => {
           if (
@@ -43,6 +37,12 @@ export class PartidaService {
           }
         }),
       );
+
+      if (!retorno || retorno.length === 0) {
+        throw new NotFoundException(
+          'Não foi possível definir partida ou partida não foi iniciada',
+        );
+      }
 
       return retorno;
     } catch (error) {

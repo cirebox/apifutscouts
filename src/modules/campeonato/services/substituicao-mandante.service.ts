@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
 import { GlobalService } from 'src/modules/shared/services/global.services';
 
@@ -14,13 +14,24 @@ export class SubstituicaoMandanteService {
 
   async execute(): Promise<Futebol.Substituicao[]> {
     try {
+      if (!this.globalService.campeonatoId) {
+        throw new NotFoundException('Nenhum campeonato foi definido');
+      }
+
+      if (!this.globalService.partidaId) {
+        throw new NotFoundException('Nenhuma partida foi definida');
+      }
+
+      if (!this.globalService.equipeMandanteId) {
+        throw new NotFoundException('Nenhuma equipe mandante foi definida');
+      }
+
       const filter: Futebol.OptionsPartida = {
         campeonatoId: this.globalService.campeonatoId,
-        campeonato: this.globalService.campeonato,
         partidaId: this.globalService.partidaId,
         equipeId: this.globalService.equipeMandanteId,
-        dirLogo: this.globalService.dirLogo,
       };
+
       return this.apiFutebolProvider.substituicao(filter);
     } catch (error) {
       this.logger.error('Erro ao puxar substituições equipe Visitante');

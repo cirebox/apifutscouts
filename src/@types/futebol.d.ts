@@ -1,7 +1,7 @@
 declare namespace Futebol {
   interface OptionsPartida {
     campeonatoId: number;
-    campeonato: string;
+    campeonato?: string;
     campeonatoSlug?: string;
     rodadaId?: number;
     partidaId?: number;

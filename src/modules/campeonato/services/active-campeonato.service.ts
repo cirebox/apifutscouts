@@ -54,15 +54,17 @@ export class ActiveCampeonatoService {
 
         await this.partidaService.execute();
 
-        this.globalService.mandanteAtletas =
-          await this.apiFutebolProvider.equipeAtletas(
-            this.globalService.equipeMandanteId,
-          );
+        if (this.globalService.partidaId) {
+          this.globalService.mandanteAtletas =
+            await this.apiFutebolProvider.equipeAtletas(
+              this.globalService.equipeMandanteId,
+            );
 
-        this.globalService.visitanteAtletas =
-          await this.apiFutebolProvider.equipeAtletas(
-            this.globalService.equipeVisitanteId,
-          );
+          this.globalService.visitanteAtletas =
+            await this.apiFutebolProvider.equipeAtletas(
+              this.globalService.equipeVisitanteId,
+            );
+        }
 
         return this.globalService;
       }

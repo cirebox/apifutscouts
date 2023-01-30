@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
 import { GlobalService } from 'src/modules/shared/services/global.services';
 
@@ -14,6 +14,14 @@ export class MensagensService {
 
   async execute(): Promise<Futebol.Mensagem[]> {
     try {
+      if (!this.globalService.campeonatoId) {
+        throw new NotFoundException('Nenhum campeonato foi definido');
+      }
+
+      if (!this.globalService.partidaId) {
+        throw new NotFoundException('Nenhuma partida foi definida');
+      }
+
       return this.apiFutebolProvider.mensagens(this.globalService);
     } catch (error) {
       this.logger.error('Erro ao puxar mensagens da partida');
