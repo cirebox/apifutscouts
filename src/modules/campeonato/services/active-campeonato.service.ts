@@ -21,6 +21,7 @@ export class ActiveCampeonatoService {
     teste: string,
   ): Promise<Futebol.OptionsPartida> {
     try {
+      this.globalService.clear();
       if (teste === 'true') {
         campeonato = 'carioca';
         this.globalService.campeonatoId = 830;

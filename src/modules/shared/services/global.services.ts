@@ -11,4 +11,19 @@ export class GlobalService implements Futebol.OptionsPartida {
   mandanteAtletas?: Futebol.Atleta[];
   visitanteAtletas?: Futebol.Atleta[];
   dirLogo?: string;
+
+  clear() {
+    this.campeonatoId = undefined;
+    this.campeonato = undefined;
+    this.campeonatoSlug = undefined;
+    this.rodadaId = undefined;
+    this.partidaId = undefined;
+    this.equipeId = undefined;
+    this.equipeMandanteId = undefined;
+    this.equipeVisitanteId = undefined;
+    this.atletaId = undefined;
+    this.mandanteAtletas = undefined;
+    this.visitanteAtletas = undefined;
+    this.dirLogo = undefined;
+  }
 }
