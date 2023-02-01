@@ -222,7 +222,8 @@ declare namespace Futebol {
 
   interface Partida {
     partidaId: number;
-    rodada: number;
+    rodadaId: number;
+    rodada: string;
     campeonato: string;
     campeonato_nome_popular: string;
     faseAtual: string;

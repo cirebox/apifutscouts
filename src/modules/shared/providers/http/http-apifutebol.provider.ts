@@ -112,7 +112,8 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
       const golsVisitante = response.data.data.placar.golsVisitante ?? ' ';
       const partida: Futebol.Partida = {
         partidaId: response.data.data.id,
-        rodada: response.data.data.rodada,
+        rodadaId: response.data.data.rodada,
+        rodada: response.data.data.rodada + 'ª RODADA',
         campeonato: response.data.data.nomeDaTaca,
         campeonato_nome_popular: response.data.data.nomeDaTaca,
         faseAtual: response.data.data.fase,
@@ -128,10 +129,22 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
           this.globalService.dirLogo + response.data.data.idEquipeVisitante,
         golsMandante: response.data.data.placar.golsMandante ?? 0,
         golsVisitante: response.data.data.placar.golsVisitante ?? 0,
-        periodo: response.data.data.periodoJogo ?? '',
         status: response.data.data.status ?? '',
         estadio: response.data.data.estadio ?? '',
-        dataRealizacao: response.data.data.dataDaPartidaIso,
+
+        periodo:
+          response.data.data.periodoJogo == 'Não Inic.'
+            ? this.isoToDate(response.data.data.dataDaPartidaIso) +
+              ' ' +
+              response.data.data.dataDaPartidaIso.split('T')[1].substring(0, 5)
+            : response.data.data.periodoJogo ?? '',
+
+        dataRealizacao:
+          this.isoToDate(response.data.data.dataDaPartidaIso) +
+            ' ' +
+            response.data.data.dataDaPartidaIso.split('T')[1].substring(0, 5) ??
+          '',
+
         arbitro: response.data.data.arbitro ?? '',
         publico: response.data.data.publico ?? 0,
         renda: response.data.data.renda ?? 0,
@@ -795,5 +808,21 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
+  }
+
+  isoToDate(str): string {
+    const date = new Date(str);
+    const year = date.getFullYear();
+    const imonth = date.getMonth() + 1;
+    const idt = date.getDate();
+    let smonth;
+    let sdt;
+    if (idt < 10) {
+      sdt = '0' + idt.toString();
+    }
+    if (imonth < 10) {
+      smonth = '0' + imonth.toString();
+    }
+    return sdt + '/' + smonth + '/' + year;
   }
 }

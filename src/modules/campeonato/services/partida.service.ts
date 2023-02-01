@@ -28,7 +28,7 @@ export class PartidaService {
                 await this.apiFutebolProvider.partida(obj.partidaId);
 
               this.globalService.partidaId = partida.partidaId;
-              this.globalService.rodadaId = partida.rodada;
+              this.globalService.rodadaId = partida.rodadaId;
               this.globalService.equipeMandanteId = partida.mandanteId;
               this.globalService.equipeVisitanteId = partida.visitanteId;
 
