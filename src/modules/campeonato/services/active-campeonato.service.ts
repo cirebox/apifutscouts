@@ -1,6 +1,6 @@
 import { PartidaService } from './partida.service';
 import { GlobalService } from './../../shared/services/global.services';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
 import { CampeonatosService } from './campeonatos.service';
 
@@ -21,7 +21,11 @@ export class ActiveCampeonatoService {
     teste: string,
   ): Promise<Futebol.OptionsPartida> {
     try {
-      this.globalService.clear();
+      if (!campeonato) {
+        throw new NotFoundException('Nenhum campeonato foi definido');
+      }
+
+      // this.globalService.clear();
       if (teste === 'true') {
         campeonato = 'carioca';
         this.globalService.campeonatoId = 830;
