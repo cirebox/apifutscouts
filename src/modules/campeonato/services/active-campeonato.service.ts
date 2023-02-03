@@ -25,7 +25,7 @@ export class ActiveCampeonatoService {
         throw new NotFoundException('Nenhum campeonato foi definido');
       }
 
-      // this.globalService.clear();
+      this.globalService.clear();
       if (teste === 'true') {
         campeonato = 'carioca';
         this.globalService.campeonatoId = 830;
