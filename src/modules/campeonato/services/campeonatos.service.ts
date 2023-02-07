@@ -42,7 +42,7 @@ export class CampeonatosService {
       }
 
       const retorno = campeonatos.filter(
-        (value) => value.ativo === true && value.temporada == year,
+        (value) => value.ativo === true, // && value.temporada == year,
       );
 
       return retorno;
