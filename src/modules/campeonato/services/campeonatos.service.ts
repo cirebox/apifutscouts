@@ -25,8 +25,7 @@ export class CampeonatosService {
             value.slug
               .toLowerCase()
               .includes(campeonatoAtivoSlug.toLowerCase()) &&
-            value.ativo === true &&
-            value.temporada == year,
+            value.ativo === true, // &&        value.temporada == year,
         )[0];
 
         if (!retorno) {
