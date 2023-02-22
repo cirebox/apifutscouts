@@ -563,9 +563,9 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
       const retorno = [];
       const totalpossebola =
         response.data[0].posseDeBola + response.data[0].posseDeBola;
-      const posseBolaMandante = Math.round(
-        (response.data[0].posseDeBola / totalpossebola) * 100,
-      );
+
+      const posse = response.data[0].percentualPosseBola.replace('%', '');
+      const posseBolaMandante = Math.round(posse);
       response.data.forEach((obj) => {
         const data = {
           idPartida: filter.partidaId,
