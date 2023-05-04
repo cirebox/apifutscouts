@@ -28,6 +28,7 @@ import { HeatmapJogadorService } from './services/heatmap-jogador.service';
 import { ScoutMandanteAtletasService } from './services/scout-mandante-atletas.service';
 import { ScoutVisitanteAtletasService } from './services/scout-visitante-atletas.service';
 import { CampeonatosService } from './services/campeonatos.service';
+import { ClassificacaoByGrupoService } from './services/classificacao-by-grupo.service';
 
 @Module({
   imports: [SharedModule],
@@ -60,6 +61,7 @@ import { CampeonatosService } from './services/campeonatos.service';
     ScoutMandanteAtletasService,
     ScoutVisitanteAtletasService,
     CampeonatosService,
+    ClassificacaoByGrupoService,
   ],
 })
 export class CampeonatoModule {}

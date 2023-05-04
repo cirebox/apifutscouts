@@ -3,6 +3,7 @@ declare namespace Futebol {
     campeonatoId: number;
     campeonato?: string;
     campeonatoSlug?: string;
+    grupoId?: string;
     rodadaId?: number;
     partidaId?: number;
     equipeId?: number;
@@ -91,6 +92,7 @@ declare namespace Futebol {
 
   interface Classificacao {
     grupo?: number;
+    grupoLetra?: string;
     posicao: number;
     time: string;
     logo: string;

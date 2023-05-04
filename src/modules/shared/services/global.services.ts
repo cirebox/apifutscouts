@@ -2,6 +2,7 @@ export class GlobalService implements Futebol.OptionsPartida {
   campeonatoId: number;
   campeonato: string;
   campeonatoSlug: string;
+  grupoId?: string;
   rodadaId?: number;
   partidaId?: number;
   equipeId?: number;
@@ -16,6 +17,7 @@ export class GlobalService implements Futebol.OptionsPartida {
     this.campeonatoId = undefined;
     this.campeonato = undefined;
     this.campeonatoSlug = undefined;
+    this.grupoId = undefined;
     this.rodadaId = undefined;
     this.partidaId = undefined;
     this.equipeId = undefined;

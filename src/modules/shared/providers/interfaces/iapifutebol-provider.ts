@@ -7,6 +7,7 @@ export interface IAPIFutebolProvider {
   classificacao(
     filter: Futebol.OptionsPartida,
   ): Promise<Futebol.Classificacao[]>;
+  classificacaoByGrupo(grupoId: string): Promise<Futebol.Classificacao[]>;
   artilharia(filter: Futebol.OptionsPartida): Promise<Futebol.Artilharia[]>;
   rodadaById(rodadaId: number): Promise<Futebol.Partida[]>;
   scoutEquipe(filter: Futebol.OptionsPartida): Promise<Futebol.ScoutEquipe[]>;

@@ -317,10 +317,23 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
 
       const response = await lastValueFrom(request);
 
+      const letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'L'];
+
+      let grupoIndex = 0;
+      let countEquipe = 0;
+
       const retorno = [];
       response.data.forEach((obj) => {
+        if (countEquipe == 4 && obj.posicao == 1) {
+          countEquipe = 0;
+          grupoIndex = grupoIndex + 1;
+        }
+
+        countEquipe = countEquipe + 1;
+
         const data = {
           grupo: obj.grupo,
+          grupoLetra: letras[grupoIndex],
           posicao: obj.posicao,
           time: obj.equipe,
           logo: filter.dirLogo + obj.equipe + '.png',
@@ -343,6 +356,71 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .build().body;
     } catch (error: any) {
       this.logger.error('Error: puxando classificação');
+      this.logger.error(error.message);
+      throw new NestResponseException(error);
+    }
+  }
+
+  async classificacaoByGrupo(
+    grupoId: string,
+  ): Promise<Futebol.Classificacao[]> {
+    this.logger.debug('classificação por grupo: ', grupoId);
+
+    try {
+      const url = `${this.apiFutebolV2Url}/Campeonato/obter-classificacao?Token=${this.token}&Championship=${this.globalService.campeonatoId}`;
+      this.logger.debug('URL: ', url);
+
+      const request = this.httpService.get(url, {
+        headers: {
+          'content-type': 'application/json',
+          useQueryString: true,
+        },
+      });
+
+      const response = await lastValueFrom(request);
+
+      const letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'L'];
+
+      let grupoIndex = 0;
+      let countEquipe = 0;
+      const retorno = [];
+
+      response.data.forEach((obj) => {
+        if (countEquipe == 4 && obj.posicao == 1) {
+          countEquipe = 0;
+          grupoIndex = grupoIndex + 1;
+        }
+
+        countEquipe = countEquipe + 1;
+
+        if (letras[grupoIndex] == grupoId) {
+          const data = {
+            grupo: obj.grupo,
+            grupoLetra: letras[grupoIndex],
+            posicao: obj.posicao,
+            time: obj.equipe,
+            logo: this.globalService.dirLogo + obj.equipe + '.png',
+            pontos: obj.pontos,
+            jogos: obj.jogos ?? 0,
+            vitorias: obj.vitorias ?? 0,
+            empates: obj.empates ?? 0,
+            derrotas: obj.derrotas,
+            gols_pro: obj.golsPro ?? 0,
+            gols_contra: obj.golsContra ?? 0,
+            saldoDeGols: obj.saldoGols ?? 0,
+            aproveitamento: obj.aproveitamento ?? 0,
+          } as Futebol.Classificacao;
+
+          retorno.push(data);
+        }
+      });
+
+      return this.nestResponseBuilder
+        .setStatus(response.status)
+        .setBody(retorno)
+        .build().body;
+    } catch (error: any) {
+      this.logger.error('Error: puxando classificação por grupo');
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }

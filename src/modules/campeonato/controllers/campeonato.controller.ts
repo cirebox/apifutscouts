@@ -36,6 +36,7 @@ import { PartidaService } from '../services/partida.service';
 import { HeatmapJogadorService } from '../services/heatmap-jogador.service';
 import { ScoutMandanteAtletasService } from '../services/scout-mandante-atletas.service';
 import { ScoutVisitanteAtletasService } from '../services/scout-visitante-atletas.service';
+import { ClassificacaoByGrupoService } from '../services/classificacao-by-grupo.service';
 
 @ApiTags('campeonato')
 @Controller('campeonato')
@@ -50,6 +51,7 @@ export class CampeonatoController {
     private readonly equipeMandanteService: EquipeMandanteService,
     private readonly equipeVisitanteService: EquipeVisitanteService,
     private readonly classificacaoService: ClassificacaoService,
+    private readonly classificacaoByGrupoService: ClassificacaoByGrupoService,
     private readonly artilhariaService: ArtilhariaService,
     private readonly rodadaByIdService: RodadaByIdService,
     private readonly scoutEquipeService: ScoutEquipeService,
@@ -235,6 +237,36 @@ export class CampeonatoController {
   @Get('classificacao')
   async classificacao(): Promise<Futebol.Classificacao[]> {
     return await this.classificacaoService.execute();
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: 'Ok. the request was successfully completed.',
+  })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad Request. The request was invalid.',
+  })
+  @ApiUnauthorizedResponse({
+    status: 401,
+    description:
+      'Unauthorized. The request did not include an authentication token or the authentication token was expired.',
+  })
+  @ApiForbiddenResponse({
+    status: 403,
+    description:
+      'Forbidden. The client did not have permission to access the requested resource.',
+  })
+  @ApiNotFoundResponse({
+    status: 404,
+    description: 'Not Found. The requested resource was not found.',
+  })
+  @ApiParam({ name: 'grupoId', type: 'String', required: true })
+  @Get('classificacao/:grupoId')
+  async classificacaoByGrupo(
+    @Param('grupoId') grupoId: string,
+  ): Promise<Futebol.Classificacao[]> {
+    return await this.classificacaoByGrupoService.execute(grupoId);
   }
 
   @ApiResponse({
