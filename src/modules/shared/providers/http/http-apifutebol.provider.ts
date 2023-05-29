@@ -144,7 +144,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
             ' ' +
             response.data.data.dataDaPartidaIso.split('T')[1].substring(0, 5) ??
           '',
-
+        dateOriginal: response.data.data.dataDaPartidaIso,
         arbitro: response.data.data.arbitro ?? '',
         publico: response.data.data.publico ?? 0,
         renda: response.data.data.renda ?? 0,
@@ -493,6 +493,10 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
           }
         }),
       );
+
+      retorno.sort(function (a, b) {
+        return Date.parse(a.dateOriginal) - Date.parse(b.dateOriginal);
+      });
 
       return this.nestResponseBuilder
         .setStatus(response.status)
@@ -894,7 +898,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
     const imonth = date.getMonth() + 1;
     const idt = date.getDate();
     let smonth;
-    let sdt;
+    let sdt = idt.toString();
     if (idt < 10) {
       sdt = '0' + idt.toString();
     }

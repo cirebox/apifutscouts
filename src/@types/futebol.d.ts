@@ -243,6 +243,7 @@ declare namespace Futebol {
     status: string;
     estadio: string;
     dataRealizacao: string;
+    dateOriginal: Date;
     arbitro: string;
     publico: number;
     renda: number;
