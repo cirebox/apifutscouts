@@ -467,6 +467,59 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
     }
   }
 
+  async rodadaByGroup(
+    rodadaId: number,
+    group: string,
+  ): Promise<Futebol.Partida[]> {
+    this.logger.debug('rodada por grupo: ', group);
+
+    try {
+      const url = `${this.apiFutebolV1Url}/campeonatos/${this.globalService.campeonatoId}/partidas/rodada/${rodadaId}`;
+      this.logger.debug('URL: ', url);
+
+      const request = this.httpService.get(url, {
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${this.token}`,
+          useQueryString: true,
+        },
+      });
+
+      const response = await lastValueFrom(request);
+
+      const retorno = [];
+      await Promise.all(
+        response.data.data.map(async (obj) => {
+          if (obj.id > 0) {
+            const partida: Futebol.Partida = await this.partida(obj.id);
+            retorno.push(partida);
+          }
+        }),
+      );
+
+      retorno.sort(function (a, b) {
+        return Date.parse(a.dateOriginal) - Date.parse(b.dateOriginal);
+      });
+
+      const retornoTratado: Futebol.Partida[] = [];
+
+      retorno.forEach((obj) => {
+        if (obj.grupo === group) {
+          retornoTratado.push(obj);
+        }
+      });
+
+      return this.nestResponseBuilder
+        .setStatus(response.status)
+        .setBody(retornoTratado)
+        .build().body;
+    } catch (error: any) {
+      this.logger.error('Error: puxando rodada por id');
+      this.logger.error(error.message);
+      throw new NestResponseException(error);
+    }
+  }
+
   async rodadaById(rodadaId: number): Promise<Futebol.Partida[]> {
     this.logger.debug('rodada por id: ', rodadaId);
 

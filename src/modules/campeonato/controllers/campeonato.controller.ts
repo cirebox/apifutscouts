@@ -37,6 +37,7 @@ import { HeatmapJogadorService } from '../services/heatmap-jogador.service';
 import { ScoutMandanteAtletasService } from '../services/scout-mandante-atletas.service';
 import { ScoutVisitanteAtletasService } from '../services/scout-visitante-atletas.service';
 import { ClassificacaoByGrupoService } from '../services/classificacao-by-grupo.service';
+import { RodadaByGroupService } from '../services/rodada-by-group.service';
 
 @ApiTags('campeonato')
 @Controller('campeonato')
@@ -54,6 +55,7 @@ export class CampeonatoController {
     private readonly classificacaoByGrupoService: ClassificacaoByGrupoService,
     private readonly artilhariaService: ArtilhariaService,
     private readonly rodadaByIdService: RodadaByIdService,
+    private readonly rodadaByGroupService: RodadaByGroupService,
     private readonly scoutEquipeService: ScoutEquipeService,
     private readonly scoutMandanteService: ScoutMandanteService,
     private readonly scoutVisitanteService: ScoutVisitanteService,
@@ -406,6 +408,38 @@ export class CampeonatoController {
   @Get('rodada/:rodada')
   async rodada(@Param('rodada') rodada: number): Promise<Futebol.Partida[]> {
     return await this.rodadaByIdService.execute(rodada);
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: 'Ok. the request was successfully completed.',
+  })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: 'Bad Request. The request was invalid.',
+  })
+  @ApiUnauthorizedResponse({
+    status: 401,
+    description:
+      'Unauthorized. The request did not include an authentication token or the authentication token was expired.',
+  })
+  @ApiForbiddenResponse({
+    status: 403,
+    description:
+      'Forbidden. The client did not have permission to access the requested resource.',
+  })
+  @ApiNotFoundResponse({
+    status: 404,
+    description: 'Not Found. The requested resource was not found.',
+  })
+  @ApiParam({ name: 'rodada', type: 'number', required: true })
+  @ApiParam({ name: 'grupo', type: 'String', required: true })
+  @Get('rodada/:rodada/grupo/:grupo')
+  async rodadaPorGrupo(
+    @Param('rodada') rodada: number,
+    @Param('grupo') grupo: string,
+  ): Promise<Futebol.Partida[]> {
+    return await this.rodadaByGroupService.execute(rodada, grupo);
   }
 
   @ApiResponse({

@@ -29,6 +29,7 @@ import { ScoutMandanteAtletasService } from './services/scout-mandante-atletas.s
 import { ScoutVisitanteAtletasService } from './services/scout-visitante-atletas.service';
 import { CampeonatosService } from './services/campeonatos.service';
 import { ClassificacaoByGrupoService } from './services/classificacao-by-grupo.service';
+import { RodadaByGroupService } from './services/rodada-by-group.service';
 
 @Module({
   imports: [SharedModule],
@@ -62,6 +63,7 @@ import { ClassificacaoByGrupoService } from './services/classificacao-by-grupo.s
     ScoutVisitanteAtletasService,
     CampeonatosService,
     ClassificacaoByGrupoService,
+    RodadaByGroupService,
   ],
 })
 export class CampeonatoModule {}
