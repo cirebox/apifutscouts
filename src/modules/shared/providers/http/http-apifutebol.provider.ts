@@ -134,16 +134,23 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
 
         periodo:
           response.data.data.periodoJogo == 'Não Inic.'
-            ? this.isoToDate(response.data.data.dataDaPartidaIso) +
-              ' ' +
-              response.data.data.dataDaPartidaIso.split('T')[1].substring(0, 5)
+            ? response.data.data.dataDaPartidaIso != null
+              ? this.isoToDate(response.data.data.dataDaPartidaIso) +
+                ' ' +
+                response.data.data.dataDaPartidaIso
+                  .split('T')[1]
+                  .substring(0, 5)
+              : 'Data indefinida'
             : response.data.data.periodoJogo ?? '',
 
         dataRealizacao:
-          this.isoToDate(response.data.data.dataDaPartidaIso) +
-            ' ' +
-            response.data.data.dataDaPartidaIso.split('T')[1].substring(0, 5) ??
-          '',
+          response.data.data.dataDaPartidaIso != null
+            ? this.isoToDate(response.data.data.dataDaPartidaIso) +
+                ' ' +
+                response.data.data.dataDaPartidaIso
+                  .split('T')[1]
+                  .substring(0, 5) ?? ''
+            : 'Data indefinida',
         dateOriginal: response.data.data.dataDaPartidaIso,
         arbitro: response.data.data.arbitro ?? '',
         publico: response.data.data.publico ?? 0,
@@ -158,9 +165,15 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         response.data.data.idEquipeVisitante,
       );
 
-      partida.mandante = equipeMandante.nome;
+      partida.mandante =
+        equipeMandante.nome == 'Red Bull Bragantino'
+          ? 'RB Bragantino'
+          : equipeMandante.nome;
       partida.logoMandante = equipeMandante.logo;
-      partida.visitante = equipeVisitante.nome;
+      partida.visitante =
+        equipeVisitante.nome == 'Red Bull Bragantino'
+          ? 'RB Bragantino'
+          : equipeVisitante.nome;
       partida.logoVisitante = equipeVisitante.logo;
 
       return this.nestResponseBuilder

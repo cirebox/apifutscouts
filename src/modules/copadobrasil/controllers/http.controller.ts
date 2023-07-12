@@ -9,34 +9,34 @@ import {
   ApiQuery,
   ApiParam,
 } from '@nestjs/swagger';
-import { ActiveCampeonatoService } from 'src/modules/campeonato/services/active-campeonato.service';
-import { ArtilhariaService } from 'src/modules/campeonato/services/artilharia.service';
-import { CampeonatosService } from 'src/modules/campeonato/services/campeonatos.service';
-import { ClassificacaoByGrupoService } from 'src/modules/campeonato/services/classificacao-by-grupo.service';
-import { ClassificacaoService } from 'src/modules/campeonato/services/classificacao.service';
-import { EquipeByIdService } from 'src/modules/campeonato/services/equipe-by-id.service';
-import { EquipeMandanteService } from 'src/modules/campeonato/services/equipe-mandante.service';
-import { EquipeVisitanteService } from 'src/modules/campeonato/services/equipe-visitante.service';
-import { EscalacaoMandanteService } from 'src/modules/campeonato/services/escalacao-mandante.service';
-import { EscalacaoVisitanteService } from 'src/modules/campeonato/services/escalacao-visitante.service';
-import { HeatmapAtletaByIdService } from 'src/modules/campeonato/services/heatmap-atleta-by-id.service';
-import { HeatmapJogadorService } from 'src/modules/campeonato/services/heatmap-jogador.service';
-import { HeatmapMadanteJsonService } from 'src/modules/campeonato/services/heatmap-madante-json.service';
-import { HeatmapVisitanteJsonService } from 'src/modules/campeonato/services/heatmap-visitante-json.service';
-import { InfoService } from 'src/modules/campeonato/services/info.service';
-import { MensagensService } from 'src/modules/campeonato/services/mensagens.service';
-import { PartidaService } from 'src/modules/campeonato/services/partida.service';
-import { PartidasHojeService } from 'src/modules/campeonato/services/partidas-hoje.service';
-import { RodadaByGroupService } from 'src/modules/campeonato/services/rodada-by-group.service';
-import { RodadaByIdService } from 'src/modules/campeonato/services/rodada-by-id.service';
-import { ScoutEquipeService } from 'src/modules/campeonato/services/scout-equipe.service';
-import { ScoutJogadorByIdService } from 'src/modules/campeonato/services/scout-jogador-by-id.service';
-import { ScoutMandanteAtletasService } from 'src/modules/campeonato/services/scout-mandante-atletas.service';
-import { ScoutMandanteService } from 'src/modules/campeonato/services/scout-mandante.service';
-import { ScoutVisitanteAtletasService } from 'src/modules/campeonato/services/scout-visitante-atletas.service';
-import { ScoutVisitanteService } from 'src/modules/campeonato/services/scout-visitante.service';
-import { SubstituicaoMandanteService } from 'src/modules/campeonato/services/substituicao-mandante.service';
-import { SubstituicaoVisitaneService } from 'src/modules/campeonato/services/substituicao-visitane.service';
+import { ActiveCampeonatoService } from '../services/active-campeonato.service';
+import { ArtilhariaService } from '../services/artilharia.service';
+import { CampeonatosService } from '../services/campeonatos.service';
+import { ClassificacaoByGrupoService } from '../services/classificacao-by-grupo.service';
+import { ClassificacaoService } from '../services/classificacao.service';
+import { EquipeByIdService } from '../services/equipe-by-id.service';
+import { EquipeMandanteService } from '../services/equipe-mandante.service';
+import { EquipeVisitanteService } from '../services/equipe-visitante.service';
+import { EscalacaoMandanteService } from '../services/escalacao-mandante.service';
+import { EscalacaoVisitanteService } from '../services/escalacao-visitante.service';
+import { HeatmapAtletaByIdService } from '../services/heatmap-atleta-by-id.service';
+import { HeatmapJogadorService } from '../services/heatmap-jogador.service';
+import { HeatmapMadanteJsonService } from '../services/heatmap-madante-json.service';
+import { HeatmapVisitanteJsonService } from '../services/heatmap-visitante-json.service';
+import { InfoService } from '../services/info.service';
+import { MensagensService } from '../services/mensagens.service';
+import { PartidaService } from '../services/partida.service';
+import { PartidasHojeService } from '../services/partidas-hoje.service';
+import { RodadaByGroupService } from '../services/rodada-by-group.service';
+import { RodadaByIdService } from '../services/rodada-by-id.service';
+import { ScoutEquipeService } from '../services/scout-equipe.service';
+import { ScoutJogadorByIdService } from '../services/scout-jogador-by-id.service';
+import { ScoutMandanteAtletasService } from '../services/scout-mandante-atletas.service';
+import { ScoutMandanteService } from '../services/scout-mandante.service';
+import { ScoutVisitanteAtletasService } from '../services/scout-visitante-atletas.service';
+import { ScoutVisitanteService } from '../services/scout-visitante.service';
+import { SubstituicaoMandanteService } from '../services/substituicao-mandante.service';
+import { SubstituicaoVisitaneService } from '../services/substituicao-visitane.service';
 
 @ApiTags('copa-do-brasil')
 @Controller('copa-do-brasil')
