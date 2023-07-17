@@ -118,7 +118,11 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         campeonato_nome_popular: response.data.data.nomeDaTaca,
         faseAtual: response.data.data.fase,
         grupo: response.data.data.grupo,
-        placar: golMandante + ' x ' + golsVisitante,
+        placar:
+          response.data.data.periodoJogo == 'Não Inic.' ||
+          response.data.data.dataDaPartidaIso == null
+            ? golMandante + 'x' + golsVisitante
+            : golMandante + ' x ' + golsVisitante,
         mandanteId: response.data.data.idEquipeMandante,
         visitanteId: response.data.data.idEquipeVisitante,
         mandante: response.data.data.idEquipeMandante,
