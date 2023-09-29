@@ -972,6 +972,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
     if (idt < 10) {
       sdt = '0' + idt.toString();
     }
+    smonth = imonth.toString();
     if (imonth < 10) {
       smonth = '0' + imonth.toString();
     }
