@@ -12,7 +12,7 @@ export class ActiveCampeonatoService {
     private readonly campeonatosService: CampeonatosService,
     @Inject('IAPIFutebolProvider')
     private readonly apiFutebolProvider: IAPIFutebolProvider,
-  ) {}
+  ) { }
 
   private readonly logger = new Logger(ActiveCampeonatoService.name);
 
@@ -28,14 +28,14 @@ export class ActiveCampeonatoService {
       this.globalService.clear();
       if (teste === 'true') {
         campeonato = 'carioca';
-        this.globalService.campeonatoId = 830;
-        this.globalService.campeonato = 'Carioca 2023';
+        this.globalService.campeonatoId = 943;
+        this.globalService.campeonato = 'Carioca 2024';
         this.globalService.campeonatoSlug = campeonato;
         this.globalService.dirLogo =
           process.env.DIR_LOGO + this.globalService.campeonatoSlug + '/';
-        this.globalService.partidaId = 205488;
+        this.globalService.partidaId = 211924;
         this.globalService.equipeMandanteId = 1005;
-        this.globalService.equipeVisitanteId = 1072;
+        this.globalService.equipeVisitanteId = 2346;
         this.globalService.equipeId = 1005;
         this.globalService.rodadaId = 1;
 
