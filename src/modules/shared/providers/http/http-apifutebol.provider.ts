@@ -25,12 +25,12 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
     private readonly globalService: GlobalService,
     private readonly httpService: HttpService,
     private readonly nestResponseBuilder: NestResponseBuilder,
-  ) {}
+  ) { }
 
   async onModuleInit() {
     this.token = process.env.TOKEN;
-    this.apiFutebolV1Url = process.env.API_V1_URL;
-    this.apiFutebolV2Url = process.env.API_V2_URL;
+    this.apiFutebolV1Url = "http://apifutebol.footstats.com.br/3.1";
+    this.apiFutebolV2Url = "https://vmix.footstats.com.br/api/v1";
     const httpsAgent = new Agent({
       rejectUnauthorized: false,
     });
@@ -120,7 +120,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         grupo: response.data.data.grupo,
         placar:
           response.data.data.periodoJogo == 'Não Inic.' ||
-          response.data.data.dataDaPartidaIso == null
+            response.data.data.dataDaPartidaIso == null
             ? golMandante + 'x' + golsVisitante
             : golMandante + ' x ' + golsVisitante,
         mandanteId: response.data.data.idEquipeMandante,
@@ -140,20 +140,20 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
           response.data.data.periodoJogo == 'Não Inic.'
             ? response.data.data.dataDaPartidaIso != null
               ? this.isoToDate(response.data.data.dataDaPartidaIso) +
-                ' ' +
-                response.data.data.dataDaPartidaIso
-                  .split('T')[1]
-                  .substring(0, 5)
+              ' ' +
+              response.data.data.dataDaPartidaIso
+                .split('T')[1]
+                .substring(0, 5)
               : 'Data indefinida'
             : response.data.data.periodoJogo ?? '',
 
         dataRealizacao:
           response.data.data.dataDaPartidaIso != null
             ? this.isoToDate(response.data.data.dataDaPartidaIso) +
-                ' ' +
-                response.data.data.dataDaPartidaIso
-                  .split('T')[1]
-                  .substring(0, 5) ?? ''
+            ' ' +
+            response.data.data.dataDaPartidaIso
+              .split('T')[1]
+              .substring(0, 5) ?? ''
             : 'Data indefinida',
         dateOriginal: response.data.data.dataDaPartidaIso,
         arbitro: response.data.data.arbitro ?? '',
