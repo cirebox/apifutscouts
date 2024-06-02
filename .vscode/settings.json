@@ -6,7 +6,7 @@
     "web/": true,
     "node_modules/": true,
     "test/": true,
-    "pnpm-lock.yaml": true,
+    "pnpm-lock.yaml": false,
     "dist/": true,
     ".eslintrc.js": true,
     ".prettierrc": true,
@@ -14,12 +14,11 @@
     "android/": false,
     "ios/": true,
     "build/": true,
-    
     ".idea/": true,
     ".dart_tool": true,
     ".fvm": true,
     "coverage": true,
-    "utils": true,  
+    "utils": true,
     ".flutter-plugins": true,
     ".flutter-plugins-dependencies": true,
     "onyticket.iml": true,
@@ -28,7 +27,9 @@
   },
   "explorer.compactFolders": false,
   "dart.flutterSdkPath": "C:\\Users\\eric_\\fvm\\versions\\stable",
-  "dart.flutterSdkPaths": ["C:/Users/eric_/fvm/versions/3.3.2"],
+  "dart.flutterSdkPaths": [
+    "C:/Users/eric_/fvm/versions/3.3.2"
+  ],
   // Remove .fvm files from search
   "search.exclude": {
     "**/.fvm": true
@@ -37,7 +38,5 @@
   "files.watcherExclude": {
     "**/.fvm": true
   },
-  "editor.codeActionsOnSave": {
-  
-  }
+  "editor.codeActionsOnSave": {}
 }

@@ -25,12 +25,12 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
     private readonly globalService: GlobalService,
     private readonly httpService: HttpService,
     private readonly nestResponseBuilder: NestResponseBuilder,
-  ) { }
+  ) {}
 
   async onModuleInit() {
     this.token = process.env.TOKEN;
-    this.apiFutebolV1Url = "http://apifutebol.footstats.com.br/3.1";
-    this.apiFutebolV2Url = "https://vmix.footstats.com.br/api/v1";
+    this.apiFutebolV1Url = 'http://apifutebol.footstats.com.br/3.1';
+    this.apiFutebolV2Url = 'https://vmix.footstats.com.br/api/v1';
     const httpsAgent = new Agent({
       rejectUnauthorized: false,
     });
@@ -120,7 +120,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         grupo: response.data.data.grupo,
         placar:
           response.data.data.periodoJogo == 'Não Inic.' ||
-            response.data.data.dataDaPartidaIso == null
+          response.data.data.dataDaPartidaIso == null
             ? golMandante + 'x' + golsVisitante
             : golMandante + ' x ' + golsVisitante,
         mandanteId: response.data.data.idEquipeMandante,
@@ -140,20 +140,20 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
           response.data.data.periodoJogo == 'Não Inic.'
             ? response.data.data.dataDaPartidaIso != null
               ? this.isoToDate(response.data.data.dataDaPartidaIso) +
-              ' ' +
-              response.data.data.dataDaPartidaIso
-                .split('T')[1]
-                .substring(0, 5)
+                ' ' +
+                response.data.data.dataDaPartidaIso
+                  .split('T')[1]
+                  .substring(0, 5)
               : 'Data indefinida'
             : response.data.data.periodoJogo ?? '',
 
         dataRealizacao:
           response.data.data.dataDaPartidaIso != null
             ? this.isoToDate(response.data.data.dataDaPartidaIso) +
-            ' ' +
-            response.data.data.dataDaPartidaIso
-              .split('T')[1]
-              .substring(0, 5) ?? ''
+                ' ' +
+                response.data.data.dataDaPartidaIso
+                  .split('T')[1]
+                  .substring(0, 5) ?? ''
             : 'Data indefinida',
         dateOriginal: response.data.data.dataDaPartidaIso,
         arbitro: response.data.data.arbitro ?? '',
@@ -723,12 +723,17 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
           idPartida: filter.partidaId,
           finalizacaos: obj.finalizacaoCerta + obj.finalizacaoErrada ?? 0,
           finalizacaoNoGol: obj.finalizacaoCerta ?? 0,
+          finalizacaoErrada: obj.finalizacaoErrada ?? 0,
+          passes: obj.passeCerto + obj.passeErrado ?? 0,
+          passeCerto: obj.passeCerto ?? 0,
+          passeErrado: obj.passeErrado ?? 0,
+          desarmes: obj.desarmeCerto ?? 0,
+          desarmeCerto: obj.desarmeCerto ?? 0,
+          desarmeErrado: obj.desarmeErrado ?? 0,
           possebola: posseBolaMandante + '%' ?? '0 %',
-          passes: obj.passeCerto + obj.passeCerto ?? 0,
           faltas: obj.faltaCometida ?? 0,
           cartaoAmarelos: obj.cartaoAmarelo ?? 0,
-          cartaoVermelhos: obj.cartaoVermelho ?? 0,
-          desarmes: obj.desarmeCerto ?? 0,
+          cartaoVermelhos: obj.cartaoVermelho ?? 0,          
           impedimentos: obj.impedimento ?? 0,
           lancamentos: obj.lancamentoCerto + obj.lancamentoErrado ?? 0,
           lancamentosCertos: obj.lancamentoCerto ?? 0,

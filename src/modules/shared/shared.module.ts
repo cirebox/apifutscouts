@@ -27,4 +27,4 @@ import { GlobalService } from './services/global.services';
     },
   ],
 })
-export class SharedModule {}
+export class SharedModule { }

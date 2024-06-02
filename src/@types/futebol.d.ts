@@ -144,12 +144,17 @@ declare namespace Futebol {
     idPartida?: number;
     finalizacaos: number;
     finalizacaoNoGol: number;
+    finalizacaoErrada: number;
     possebola: number;
     passes: number;
+    passeCerto: number;
+    passeErrado: number;
     faltas: number;
     cartaoAmarelos: number;
     cartaoVermelhos: number;
     desarmes: number;
+    desarmeCerto: number;
+    desarmeErrado: number;
     impedimentos: number;
     lancamentos: number;
     lancamentosCertos: number;
