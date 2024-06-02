@@ -158,6 +158,7 @@ declare namespace Futebol {
     impedimentos: number;
     lancamentos: number;
     lancamentosCertos: number;
+    lancamentoErrado: number;
     escanteios: number;
   }
 

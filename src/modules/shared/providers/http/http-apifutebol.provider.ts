@@ -730,13 +730,14 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
           desarmes: obj.desarmeCerto ?? 0,
           desarmeCerto: obj.desarmeCerto ?? 0,
           desarmeErrado: obj.desarmeErrado ?? 0,
+          lancamentos: obj.lancamentoCerto + obj.lancamentoErrado ?? 0,
+          lancamentosCertos: obj.lancamentoCerto ?? 0,
+          lancamentoErrado: obj.lancamentoErrado ?? 0,
           possebola: posseBolaMandante + '%' ?? '0 %',
           faltas: obj.faltaCometida ?? 0,
           cartaoAmarelos: obj.cartaoAmarelo ?? 0,
-          cartaoVermelhos: obj.cartaoVermelho ?? 0,          
+          cartaoVermelhos: obj.cartaoVermelho ?? 0,
           impedimentos: obj.impedimento ?? 0,
-          lancamentos: obj.lancamentoCerto + obj.lancamentoErrado ?? 0,
-          lancamentosCertos: obj.lancamentoCerto ?? 0,
           escanteios: obj.escanteioPro ?? 0,
         };
         retorno.push(data);
