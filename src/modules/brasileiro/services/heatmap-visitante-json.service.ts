@@ -1,12 +1,12 @@
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
-import { GlobalService } from 'src/modules/shared/services/global.services';
+import { Inject, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { IAPIFutebolProvider } from "src/modules/shared/providers/interfaces/iapifutebol-provider";
+import { GlobalService } from "src/modules/shared/services/global.services";
 
 @Injectable()
 export class HeatmapVisitanteJsonService {
   constructor(
     private readonly globalService: GlobalService,
-    @Inject('IAPIFutebolProvider')
+    @Inject("IAPIFutebolProvider")
     private readonly apiFutebolProvider: IAPIFutebolProvider,
   ) {}
 
@@ -15,18 +15,18 @@ export class HeatmapVisitanteJsonService {
   async execute(): Promise<Futebol.Heatmap[]> {
     try {
       if (!this.globalService.equipeVisitanteId) {
-        throw new NotFoundException('Nenhum equipe visitante foi definido');
+        throw new NotFoundException("Nenhum equipe visitante foi definido");
       }
 
       if (!this.globalService.partidaId) {
-        throw new NotFoundException('Nenhuma partida foi definida');
+        throw new NotFoundException("Nenhuma partida foi definida");
       }
 
       return this.apiFutebolProvider.heatmap(
         this.globalService.equipeVisitanteId,
       );
     } catch (error) {
-      this.logger.error('Erro ao puxar heatmap visitante');
+      this.logger.error("Erro ao puxar heatmap visitante");
       console.log(error);
       throw error;
     }

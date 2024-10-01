@@ -1,12 +1,12 @@
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
-import { GlobalService } from 'src/modules/shared/services/global.services';
+import { Inject, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { IAPIFutebolProvider } from "src/modules/shared/providers/interfaces/iapifutebol-provider";
+import { GlobalService } from "src/modules/shared/services/global.services";
 
 @Injectable()
 export class ClassificacaoService {
   constructor(
     private readonly globalService: GlobalService,
-    @Inject('IAPIFutebolProvider')
+    @Inject("IAPIFutebolProvider")
     private readonly apiFutebolProvider: IAPIFutebolProvider,
   ) {}
 
@@ -15,12 +15,12 @@ export class ClassificacaoService {
   async execute(): Promise<Futebol.Classificacao[]> {
     try {
       if (!this.globalService.campeonatoId) {
-        throw new NotFoundException('Nenhum campeonato foi definido');
+        throw new NotFoundException("Nenhum campeonato foi definido");
       }
 
       return this.apiFutebolProvider.classificacao(this.globalService);
     } catch (error) {
-      this.logger.error('Erro ao puxar classificação');
+      this.logger.error("Erro ao puxar classificação");
       console.log(error);
       throw error;
     }

@@ -1,12 +1,12 @@
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
-import { GlobalService } from 'src/modules/shared/services/global.services';
+import { Inject, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { IAPIFutebolProvider } from "src/modules/shared/providers/interfaces/iapifutebol-provider";
+import { GlobalService } from "src/modules/shared/services/global.services";
 
 @Injectable()
 export class EscalacaoVisitanteService {
   constructor(
     private readonly globalService: GlobalService,
-    @Inject('IAPIFutebolProvider')
+    @Inject("IAPIFutebolProvider")
     private readonly apiFutebolProvider: IAPIFutebolProvider,
   ) {}
 
@@ -15,15 +15,15 @@ export class EscalacaoVisitanteService {
   async execute(): Promise<Futebol.Escalacao[]> {
     try {
       if (!this.globalService.campeonatoId) {
-        throw new NotFoundException('Nenhum campeonato foi definido');
+        throw new NotFoundException("Nenhum campeonato foi definido");
       }
 
       if (!this.globalService.partidaId) {
-        throw new NotFoundException('Nenhuma partida foi definida');
+        throw new NotFoundException("Nenhuma partida foi definida");
       }
 
       if (!this.globalService.equipeVisitanteId) {
-        throw new NotFoundException('Nenhuma equipe visitante foi definida');
+        throw new NotFoundException("Nenhuma equipe visitante foi definida");
       }
 
       const filter: Futebol.OptionsPartida = {
@@ -34,7 +34,7 @@ export class EscalacaoVisitanteService {
 
       return this.apiFutebolProvider.escalacao(filter);
     } catch (error) {
-      this.logger.error('Erro ao puxar escalação do visitante');
+      this.logger.error("Erro ao puxar escalação do visitante");
       console.log(error);
       throw error;
     }

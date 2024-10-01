@@ -1,12 +1,12 @@
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
-import { GlobalService } from 'src/modules/shared/services/global.services';
+import { Inject, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { IAPIFutebolProvider } from "src/modules/shared/providers/interfaces/iapifutebol-provider";
+import { GlobalService } from "src/modules/shared/services/global.services";
 
 @Injectable()
 export class PartidaService {
   constructor(
     private readonly globalService: GlobalService,
-    @Inject('IAPIFutebolProvider')
+    @Inject("IAPIFutebolProvider")
     private readonly apiFutebolProvider: IAPIFutebolProvider,
   ) {}
 
@@ -40,13 +40,13 @@ export class PartidaService {
 
       if (!retorno || retorno.length === 0) {
         throw new NotFoundException(
-          'Não foi possível definir partida ou partida não foi iniciada',
+          "Não foi possível definir partida ou partida não foi iniciada",
         );
       }
 
       return retorno;
     } catch (error) {
-      this.logger.error('Erro ao puxar partidas de hoje');
+      this.logger.error("Erro ao puxar partidas de hoje");
       console.log(error);
       throw error;
     }

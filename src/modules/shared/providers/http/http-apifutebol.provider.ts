@@ -1,17 +1,17 @@
-import { Agent } from 'https';
-import { HttpService } from '@nestjs/axios';
+import { Agent } from "https";
+import { HttpService } from "@nestjs/axios";
 import {
   Injectable,
   Logger,
   NotFoundException,
   OnModuleInit,
-} from '@nestjs/common';
-import { config } from 'dotenv';
-import { NestResponseBuilder } from '../../../../core/http/nest-response-builder';
-import { IAPIFutebolProvider } from '../interfaces/iapifutebol-provider';
-import { NestResponseException } from 'src/core/http/nest-response-exception';
-import { lastValueFrom } from 'rxjs';
-import { GlobalService } from '../../services/global.services';
+} from "@nestjs/common";
+import { config } from "dotenv";
+import { NestResponseBuilder } from "../../../../core/http/nest-response-builder";
+import { IAPIFutebolProvider } from "../interfaces/iapifutebol-provider";
+import { NestResponseException } from "src/core/http/nest-response-exception";
+import { lastValueFrom } from "rxjs";
+import { GlobalService } from "../../services/global.services";
 
 config();
 
@@ -25,12 +25,12 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
     private readonly globalService: GlobalService,
     private readonly httpService: HttpService,
     private readonly nestResponseBuilder: NestResponseBuilder,
-  ) {}
+  ) { }
 
   async onModuleInit() {
     this.token = process.env.TOKEN;
-    this.apiFutebolV1Url = 'http://apifutebol.footstats.com.br/3.1';
-    this.apiFutebolV2Url = 'https://vmix.footstats.com.br/api/v1';
+    this.apiFutebolV1Url = "http://apifutebol.footstats.com.br/3.1";
+    this.apiFutebolV2Url = "https://vmix.footstats.com.br/api/v1";
     const httpsAgent = new Agent({
       rejectUnauthorized: false,
     });
@@ -41,15 +41,15 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
   private readonly logger = new Logger(APIFutebolProvider.name);
 
   async campeonatos(): Promise<Futebol.Campeonato[]> {
-    this.logger.debug('campeonatos');
+    this.logger.debug("campeonatos");
 
     try {
       const url = `${this.apiFutebolV1Url}/campeonatos`;
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${this.token}`,
           useQueryString: true,
         },
@@ -85,22 +85,22 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retorno)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando campeonatos');
+      this.logger.error("Error: puxando campeonatos");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
   }
 
   async partida(partidaId: number): Promise<Futebol.Partida> {
-    this.logger.debug('partida Id: ', partidaId);
+    this.logger.debug("partida Id: ", partidaId);
 
     try {
       const url = `${this.apiFutebolV1Url}/partidas/${partidaId}`;
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${this.token}`,
           useQueryString: true,
         },
@@ -108,21 +108,28 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
 
       const response = await lastValueFrom(request);
 
-      const golMandante = response.data.data.placar.golsMandante ?? ' ';
-      const golsVisitante = response.data.data.placar.golsVisitante ?? ' ';
+      const golMandante = response.data.data.placar.golsMandante ?? " ";
+      const golsVisitante = response.data.data.placar.golsVisitante ?? " ";
+
+      const dataPartida: string = response.data.data.dataDaPartidaIso == null ? "Data indefinida" : (this.isoToDate(response.data.data.dataDaPartidaIso) +
+        " " +
+        (response.data.data.dataDaPartidaIso
+          .split("T")[1]
+          .substring(0, 5) ?? ""));
+
       const partida: Futebol.Partida = {
         partidaId: response.data.data.id,
         rodadaId: response.data.data.rodada,
-        rodada: response.data.data.rodada + 'ª RODADA',
+        rodada: response.data.data.rodada + "ª RODADA",
         campeonato: response.data.data.nomeDaTaca,
         campeonato_nome_popular: response.data.data.nomeDaTaca,
         faseAtual: response.data.data.fase,
         grupo: response.data.data.grupo,
         placar:
-          response.data.data.periodoJogo == 'Não Inic.' ||
-          response.data.data.dataDaPartidaIso == null
-            ? golMandante + 'x' + golsVisitante
-            : golMandante + ' x ' + golsVisitante,
+          response.data.data.periodoJogo == "Não Inic." ||
+            response.data.data.dataDaPartidaIso == null
+            ? golMandante + "x" + golsVisitante
+            : golMandante + " x " + golsVisitante,
         mandanteId: response.data.data.idEquipeMandante,
         visitanteId: response.data.data.idEquipeVisitante,
         mandante: response.data.data.idEquipeMandante,
@@ -133,30 +140,24 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
           this.globalService.dirLogo + response.data.data.idEquipeVisitante,
         golsMandante: response.data.data.placar.golsMandante ?? 0,
         golsVisitante: response.data.data.placar.golsVisitante ?? 0,
-        status: response.data.data.status ?? '',
-        estadio: response.data.data.estadio ?? '',
+        status: response.data.data.status ?? "",
+        estadio: response.data.data.estadio ?? "",
 
         periodo:
-          response.data.data.periodoJogo == 'Não Inic.'
+          response.data.data.periodoJogo == "Não Inic."
             ? response.data.data.dataDaPartidaIso != null
               ? this.isoToDate(response.data.data.dataDaPartidaIso) +
-                ' ' +
-                response.data.data.dataDaPartidaIso
-                  .split('T')[1]
-                  .substring(0, 5)
-              : 'Data indefinida'
-            : response.data.data.periodoJogo ?? '',
+              " " +
+              response.data.data.dataDaPartidaIso
+                .split("T")[1]
+                .substring(0, 5)
+              : "Data indefinida"
+            : (response.data.data.periodoJogo ?? ""),
 
-        dataRealizacao:
-          response.data.data.dataDaPartidaIso != null
-            ? this.isoToDate(response.data.data.dataDaPartidaIso) +
-                ' ' +
-                response.data.data.dataDaPartidaIso
-                  .split('T')[1]
-                  .substring(0, 5) ?? ''
-            : 'Data indefinida',
+        dataRealizacao: dataPartida,
+
         dateOriginal: response.data.data.dataDaPartidaIso,
-        arbitro: response.data.data.arbitro ?? '',
+        arbitro: response.data.data.arbitro ?? "",
         publico: response.data.data.publico ?? 0,
         renda: response.data.data.renda ?? 0,
       };
@@ -170,13 +171,13 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
       );
 
       partida.mandante =
-        equipeMandante.nome == 'Red Bull Bragantino'
-          ? 'RB Bragantino'
+        equipeMandante.nome == "Red Bull Bragantino"
+          ? "RB Bragantino"
           : equipeMandante.nome;
       partida.logoMandante = equipeMandante.logo;
       partida.visitante =
-        equipeVisitante.nome == 'Red Bull Bragantino'
-          ? 'RB Bragantino'
+        equipeVisitante.nome == "Red Bull Bragantino"
+          ? "RB Bragantino"
           : equipeVisitante.nome;
       partida.logoVisitante = equipeVisitante.logo;
 
@@ -185,22 +186,22 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(partida)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando partida');
+      this.logger.error("Error: puxando partida");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
   }
 
   async partidasHoje(): Promise<Futebol.Partida[]> {
-    this.logger.debug('partidas de hoje: ');
+    this.logger.debug("partidas de hoje: ");
 
     try {
       const url = `${this.apiFutebolV1Url}/partidas/hoje`;
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${this.token}`,
           useQueryString: true,
         },
@@ -223,22 +224,22 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retorno)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando partidas de hoje');
+      this.logger.error("Error: puxando partidas de hoje");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
   }
 
   async equipe(equipeId: number): Promise<Futebol.Equipe> {
-    this.logger.debug('equipe Id: ', equipeId);
+    this.logger.debug("equipe Id: ", equipeId);
 
     try {
       const url = `${this.apiFutebolV1Url}/equipes/${equipeId}`;
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${this.token}`,
           useQueryString: true,
         },
@@ -253,7 +254,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         estadio: response.data.data.estadio,
         tecnico: response.data.data.tecnico,
         urlLogo: response.data.data.urlLogo,
-        logo: this.globalService.dirLogo + response.data.data.nome + '.png',
+        logo: this.globalService.dirLogo + response.data.data.nome + ".png",
       };
 
       return this.nestResponseBuilder
@@ -261,22 +262,22 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(equipe)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando equipe');
+      this.logger.error("Error: puxando equipe");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
   }
 
   async equipeAtletas(equipeId: number): Promise<Futebol.Atleta[]> {
-    this.logger.debug('equipe atletas: ', equipeId);
+    this.logger.debug("equipe atletas: ", equipeId);
 
     try {
       const url = `${this.apiFutebolV1Url}/teams/${equipeId}/players`;
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${this.token}`,
           useQueryString: true,
         },
@@ -298,7 +299,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
             time: obj.team,
             url:
               process.env.URL_API +
-              'scout/visitante/atleta/' +
+              "scout/visitante/atleta/" +
               obj.id.toString(),
           };
           retorno.push(data);
@@ -310,7 +311,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retorno)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando equipe atletas');
+      this.logger.error("Error: puxando equipe atletas");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
@@ -319,22 +320,22 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
   async classificacao(
     filter: Futebol.OptionsPartida,
   ): Promise<Futebol.Classificacao[]> {
-    this.logger.debug('classificação: ', filter);
+    this.logger.debug("classificação: ", filter);
 
     try {
       const url = `${this.apiFutebolV2Url}/Campeonato/obter-classificacao?Token=${this.token}&Championship=${filter.campeonatoId}`;
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           useQueryString: true,
         },
       });
 
       const response = await lastValueFrom(request);
 
-      const letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'L'];
+      const letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L"];
 
       let grupoIndex = 0;
       let countEquipe = 0;
@@ -353,7 +354,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
           grupoLetra: letras[grupoIndex],
           posicao: obj.posicao,
           time: obj.equipe,
-          logo: filter.dirLogo + obj.equipe + '.png',
+          logo: filter.dirLogo + obj.equipe + ".png",
           pontos: obj.pontos,
           jogos: obj.jogos ?? 0,
           vitorias: obj.vitorias ?? 0,
@@ -372,7 +373,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retorno)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando classificação');
+      this.logger.error("Error: puxando classificação");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
@@ -381,22 +382,22 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
   async classificacaoByGrupo(
     grupoId: string,
   ): Promise<Futebol.Classificacao[]> {
-    this.logger.debug('classificação por grupo: ', grupoId);
+    this.logger.debug("classificação por grupo: ", grupoId);
 
     try {
       const url = `${this.apiFutebolV2Url}/Campeonato/obter-classificacao?Token=${this.token}&Championship=${this.globalService.campeonatoId}`;
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           useQueryString: true,
         },
       });
 
       const response = await lastValueFrom(request);
 
-      const letras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'L'];
+      const letras = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L"];
 
       let grupoIndex = 0;
       let countEquipe = 0;
@@ -416,7 +417,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
             grupoLetra: letras[grupoIndex],
             posicao: obj.posicao,
             time: obj.equipe,
-            logo: this.globalService.dirLogo + obj.equipe + '.png',
+            logo: this.globalService.dirLogo + obj.equipe + ".png",
             pontos: obj.pontos,
             jogos: obj.jogos ?? 0,
             vitorias: obj.vitorias ?? 0,
@@ -437,7 +438,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retorno)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando classificação por grupo');
+      this.logger.error("Error: puxando classificação por grupo");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
@@ -446,15 +447,15 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
   async artilharia(
     filter: Futebol.OptionsPartida,
   ): Promise<Futebol.Artilharia[]> {
-    this.logger.debug('artilharia: ', filter);
+    this.logger.debug("artilharia: ", filter);
 
     try {
       const url = `${this.apiFutebolV1Url}/campeonatos/${filter.campeonatoId}/artilharia`;
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${this.token}`,
           useQueryString: true,
         },
@@ -467,7 +468,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         const data = {
           atleta: obj.jogador,
           time: obj.equipe,
-          logo: filter.dirLogo + obj.equipe + '.png',
+          logo: filter.dirLogo + obj.equipe + ".png",
           gols: obj.gols ?? 0,
         };
         retorno.push(data);
@@ -478,7 +479,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retorno)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando artilharia');
+      this.logger.error("Error: puxando artilharia");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
@@ -488,15 +489,15 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
     rodadaId: number,
     group: string,
   ): Promise<Futebol.Partida[]> {
-    this.logger.debug('rodada por grupo: ', group);
+    this.logger.debug("rodada por grupo: ", group);
 
     try {
       const url = `${this.apiFutebolV1Url}/campeonatos/${this.globalService.campeonatoId}/partidas/rodada/${rodadaId}`;
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${this.token}`,
           useQueryString: true,
         },
@@ -531,22 +532,22 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retornoTratado)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando rodada por id');
+      this.logger.error("Error: puxando rodada por id");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
   }
 
   async rodadaById(rodadaId: number): Promise<Futebol.Partida[]> {
-    this.logger.debug('rodada por id: ', rodadaId);
+    this.logger.debug("rodada por id: ", rodadaId);
 
     try {
       const url = `${this.apiFutebolV1Url}/campeonatos/${this.globalService.campeonatoId}/partidas/rodada/${rodadaId}`;
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${this.token}`,
           useQueryString: true,
         },
@@ -573,22 +574,22 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retorno)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando rodada por id');
+      this.logger.error("Error: puxando rodada por id");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
   }
 
   async scoutAtletas(): Promise<any> {
-    this.logger.debug('scout Atletas: ');
+    this.logger.debug("scout Atletas: ");
 
     try {
       const url = `${this.apiFutebolV1Url}/partidas/${this.globalService.partidaId}/jogadores/scout`;
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${this.token}`,
           useQueryString: true,
         },
@@ -601,21 +602,21 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(response)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando scout Atletas');
+      this.logger.error("Error: puxando scout Atletas");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
   }
 
   async scoutAtleta(jogadorId: number): Promise<Futebol.ScoutJogador[]> {
-    this.logger.debug('scoutJogador: ', jogadorId);
+    this.logger.debug("scoutJogador: ", jogadorId);
 
     if (!this.globalService.campeonatoId) {
-      throw new NotFoundException('Nenhum campeonato foi definido');
+      throw new NotFoundException("Nenhum campeonato foi definido");
     }
 
     if (!this.globalService.partidaId) {
-      throw new NotFoundException('Nenhuma partida foi definida');
+      throw new NotFoundException("Nenhuma partida foi definida");
     }
 
     try {
@@ -624,11 +625,11 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
       &idMatch=${this.globalService.partidaId}
       &idTeam=${jogadorId}`;
 
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           useQueryString: true,
         },
       });
@@ -640,10 +641,10 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         const data: Futebol.ScoutJogador = {
           idJogador: obj.idPlayer,
           foto:
-            process.env.DIR_IMAGES_SCOUT + obj.idJogador.toString() + '.png',
+            process.env.DIR_IMAGES_SCOUT + obj.idJogador.toString() + ".png",
           heatmap:
-            process.env.DIR_IMAGES_HEATMAP + obj.idJogador.toString() + '.png',
-          nome: process.env.DIR_IMAGES_NOME + obj.idJogador.toString() + '.png',
+            process.env.DIR_IMAGES_HEATMAP + obj.idJogador.toString() + ".png",
+          nome: process.env.DIR_IMAGES_NOME + obj.idJogador.toString() + ".png",
           name: obj.nickname,
           gols: obj.gols,
           golContra: obj.golContra,
@@ -684,7 +685,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retorno)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando scoutEquipe');
+      this.logger.error("Error: puxando scoutEquipe");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
@@ -693,7 +694,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
   async scoutEquipe(
     filter: Futebol.OptionsPartida,
   ): Promise<Futebol.ScoutEquipe[]> {
-    this.logger.debug('scoutEquipe: ', filter);
+    this.logger.debug("scoutEquipe: ", filter);
 
     try {
       const url = `${this.apiFutebolV2Url}/Partida/obter-scout-time?Token=${this.token}
@@ -701,11 +702,11 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
       &idMatch=${filter.partidaId}
       &idTeam=${filter.equipeId}`;
 
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           useQueryString: true,
         },
       });
@@ -716,24 +717,24 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
       const totalpossebola =
         response.data[0].posseDeBola + response.data[0].posseDeBola;
 
-      const posse = response.data[0].percentualPosseBola.replace('%', '');
-      const posseBolaMandante = Math.round(posse);
+      const posse = response.data[0].percentualPosseBola.replace("%", "");
+      const posseBolaMandante: number = Math.round(posse ?? 0);
       response.data.forEach((obj) => {
         const data = {
           idPartida: filter.partidaId,
-          finalizacaos: obj.finalizacaoCerta + obj.finalizacaoErrada ?? 0,
+          finalizacaos: (obj.finalizacaoCerta ?? 0) + (obj.finalizacaoErrada ?? 0),
           finalizacaoNoGol: obj.finalizacaoCerta ?? 0,
           finalizacaoErrada: obj.finalizacaoErrada ?? 0,
-          passes: obj.passeCerto + obj.passeErrado ?? 0,
+          passes: (obj.passeCerto ?? 0) + (obj.passeErrado ?? 0),
           passeCerto: obj.passeCerto ?? 0,
           passeErrado: obj.passeErrado ?? 0,
           desarmes: obj.desarmeCerto ?? 0,
           desarmeCerto: obj.desarmeCerto ?? 0,
           desarmeErrado: obj.desarmeErrado ?? 0,
-          lancamentos: obj.lancamentoCerto + obj.lancamentoErrado ?? 0,
+          lancamentos: (obj.lancamentoCerto ?? 0) + (obj.lancamentoErrado ?? 0),
           lancamentosCertos: obj.lancamentoCerto ?? 0,
           lancamentoErrado: obj.lancamentoErrado ?? 0,
-          possebola: posseBolaMandante + '%' ?? '0 %',
+          possebola: posseBolaMandante + "%",
           faltas: obj.faltaCometida ?? 0,
           cartaoAmarelos: obj.cartaoAmarelo ?? 0,
           cartaoVermelhos: obj.cartaoVermelho ?? 0,
@@ -748,7 +749,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retorno)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando scoutEquipe');
+      this.logger.error("Error: puxando scoutEquipe");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
@@ -757,7 +758,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
   async escalacao(
     filter: Futebol.OptionsPartida,
   ): Promise<Futebol.Escalacao[]> {
-    this.logger.debug('escalação: ', filter);
+    this.logger.debug("escalação: ", filter);
 
     try {
       const url = `${this.apiFutebolV2Url}/Partida/obter-escalacao?Token=${this.token}
@@ -765,11 +766,11 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
       &idMatch=${filter.partidaId}
       &idTeam=${filter.equipeId}`;
 
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           useQueryString: true,
         },
       });
@@ -799,7 +800,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retorno)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando scount Equipe');
+      this.logger.error("Error: puxando scount Equipe");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
@@ -808,7 +809,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
   async substituicao(
     filter: Futebol.OptionsPartida,
   ): Promise<Futebol.Substituicao[]> {
-    this.logger.debug('substituicao: ', filter);
+    this.logger.debug("substituicao: ", filter);
 
     try {
       const url = `${this.apiFutebolV2Url}/Partida/obter-substituicoes?Token=${this.token}
@@ -816,11 +817,11 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
       &idMatch=${filter.partidaId}
       &idTeam=${filter.equipeId}`;
 
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           useQueryString: true,
         },
       });
@@ -845,25 +846,25 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retorno)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando substituicao Equipe');
+      this.logger.error("Error: puxando substituicao Equipe");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
   }
 
   async mensagens(filter: Futebol.OptionsPartida): Promise<Futebol.Mensagem[]> {
-    this.logger.debug('mensagens: ', filter);
+    this.logger.debug("mensagens: ", filter);
 
     try {
       const url = `${this.apiFutebolV2Url}/Partida/obter-mensagens?Token=${this.token}
       &Championship=${filter.campeonatoId}
       &idMatch=${filter.partidaId}`;
 
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           useQueryString: true,
         },
       });
@@ -883,22 +884,22 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retorno)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando mensagens da partida');
+      this.logger.error("Error: puxando mensagens da partida");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
   }
 
   async heatmap(equipeId: number): Promise<Futebol.Heatmap[]> {
-    this.logger.debug('heatmap por equipe: ', equipeId);
+    this.logger.debug("heatmap por equipe: ", equipeId);
 
     try {
       const url = `${this.apiFutebolV1Url}/partidas/${this.globalService.partidaId}/equipes/${equipeId}/heatmap`;
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${this.token}`,
           useQueryString: true,
         },
@@ -922,22 +923,22 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retorno)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando heatmap por equipe');
+      this.logger.error("Error: puxando heatmap por equipe");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
   }
 
   async heatmapJodador(jogadorId: number): Promise<Futebol.Heatmap[]> {
-    this.logger.debug('heatmap por jogador: ', jogadorId);
+    this.logger.debug("heatmap por jogador: ", jogadorId);
 
     try {
       const url = `${this.apiFutebolV1Url}/partidas/${this.globalService.partidaId}/jogadores/${jogadorId}/heatmap`;
-      this.logger.debug('URL: ', url);
+      this.logger.debug("URL: ", url);
 
       const request = this.httpService.get(url, {
         headers: {
-          'content-type': 'application/json',
+          "content-type": "application/json",
           Authorization: `Bearer ${this.token}`,
           useQueryString: true,
         },
@@ -962,7 +963,7 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
         .setBody(retorno)
         .build().body;
     } catch (error: any) {
-      this.logger.error('Error: puxando heatmap por jogador');
+      this.logger.error("Error: puxando heatmap por jogador");
       this.logger.error(error.message);
       throw new NestResponseException(error);
     }
@@ -976,12 +977,12 @@ export class APIFutebolProvider implements IAPIFutebolProvider, OnModuleInit {
     let smonth;
     let sdt = idt.toString();
     if (idt < 10) {
-      sdt = '0' + idt.toString();
+      sdt = "0" + idt.toString();
     }
     smonth = imonth.toString();
     if (imonth < 10) {
-      smonth = '0' + imonth.toString();
+      smonth = "0" + imonth.toString();
     }
-    return sdt + '/' + smonth + '/' + year;
+    return sdt + "/" + smonth + "/" + year;
   }
 }

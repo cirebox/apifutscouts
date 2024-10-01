@@ -1,7 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { SubstituicaoMandanteService } from './substituicao-mandante.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { SubstituicaoMandanteService } from "./substituicao-mandante.service";
 
-describe('SubstituicaoMandanteService', () => {
+describe("SubstituicaoMandanteService", () => {
   let service: SubstituicaoMandanteService;
 
   beforeEach(async () => {
@@ -9,10 +9,12 @@ describe('SubstituicaoMandanteService', () => {
       providers: [SubstituicaoMandanteService],
     }).compile();
 
-    service = module.get<SubstituicaoMandanteService>(SubstituicaoMandanteService);
+    service = module.get<SubstituicaoMandanteService>(
+      SubstituicaoMandanteService,
+    );
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 });

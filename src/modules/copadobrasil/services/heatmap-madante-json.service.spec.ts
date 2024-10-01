@@ -1,7 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { HeatmapMadanteJsonService } from './heatmap-madante-json.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { HeatmapMadanteJsonService } from "./heatmap-madante-json.service";
 
-describe('HeatmapMadanteJsonService', () => {
+describe("HeatmapMadanteJsonService", () => {
   let service: HeatmapMadanteJsonService;
 
   beforeEach(async () => {
@@ -12,7 +12,7 @@ describe('HeatmapMadanteJsonService', () => {
     service = module.get<HeatmapMadanteJsonService>(HeatmapMadanteJsonService);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 });

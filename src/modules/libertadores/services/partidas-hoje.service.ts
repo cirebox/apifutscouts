@@ -1,10 +1,10 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
+import { Inject, Injectable, Logger } from "@nestjs/common";
+import { IAPIFutebolProvider } from "src/modules/shared/providers/interfaces/iapifutebol-provider";
 
 @Injectable()
 export class PartidasHojeService {
   constructor(
-    @Inject('IAPIFutebolProvider')
+    @Inject("IAPIFutebolProvider")
     private readonly apiFutebolProvider: IAPIFutebolProvider,
   ) {}
 
@@ -14,7 +14,7 @@ export class PartidasHojeService {
     try {
       return this.apiFutebolProvider.partidasHoje();
     } catch (error) {
-      this.logger.error('Erro ao puxar partidas de hoje');
+      this.logger.error("Erro ao puxar partidas de hoje");
       console.log(error);
       throw error;
     }

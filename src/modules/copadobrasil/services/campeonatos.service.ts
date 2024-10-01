@@ -1,12 +1,12 @@
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
-import { GlobalService } from 'src/modules/shared/services/global.services';
+import { Inject, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { IAPIFutebolProvider } from "src/modules/shared/providers/interfaces/iapifutebol-provider";
+import { GlobalService } from "src/modules/shared/services/global.services";
 
 @Injectable()
 export class CampeonatosService {
   constructor(
     private readonly globalService: GlobalService,
-    @Inject('IAPIFutebolProvider')
+    @Inject("IAPIFutebolProvider")
     private readonly apiFutebolProvider: IAPIFutebolProvider,
   ) {}
 
@@ -30,7 +30,7 @@ export class CampeonatosService {
 
         if (!retorno) {
           throw new NotFoundException(
-            'Não foi possível definar a competição ou competição indisponivel',
+            "Não foi possível definar a competição ou competição indisponivel",
           );
         }
 
@@ -47,7 +47,7 @@ export class CampeonatosService {
       return retorno;
     } catch (error) {
       this.logger.error(
-        'Erro ao puxar campeonatos ou definir campeonato ativo',
+        "Erro ao puxar campeonatos ou definir campeonato ativo",
       );
       console.log(error);
       throw error;

@@ -1,4 +1,4 @@
-import { NestResponseException } from '../http/nest-response-exception';
+import { NestResponseException } from "../http/nest-response-exception";
 import {
   ArgumentsHost,
   BadRequestException,
@@ -7,9 +7,9 @@ import {
   HttpException,
   HttpStatus,
   Logger,
-} from '@nestjs/common';
-import { AbstractHttpAdapter, HttpAdapterHost } from '@nestjs/core';
-import { ThrottlerException } from '@nestjs/throttler';
+} from "@nestjs/common";
+import { AbstractHttpAdapter, HttpAdapterHost } from "@nestjs/core";
+import { ThrottlerException } from "@nestjs/throttler";
 
 @Catch()
 export class ExceptionFilterHttp implements ExceptionFilter {
@@ -24,7 +24,7 @@ export class ExceptionFilterHttp implements ExceptionFilter {
     const contextHttp = host.switchToHttp();
     const request = contextHttp.getRequest();
     const response = contextHttp.getResponse();
-    this.httpAdapter.setHeader(response, 'X-Powered-By', 'BoxSecurity');
+    this.httpAdapter.setHeader(response, "X-Powered-By", "BoxSecurity");
 
     if (exception instanceof BadRequestException) {
       const resolver: any = exception;
@@ -48,13 +48,13 @@ export class ExceptionFilterHttp implements ExceptionFilter {
         status: status,
         data: [],
         timestamp: new Date().getTime(),
-        message: 'Wait a moment to be able to make new requests.',
-        return: 'Too Many Requests',
+        message: "Wait a moment to be able to make new requests.",
+        return: "Too Many Requests",
       };
       this.httpAdapter.setHeader(
         response,
-        'Content-Type',
-        'application/json; charset=utf-8',
+        "Content-Type",
+        "application/json; charset=utf-8",
       );
       return this.httpAdapter.reply(response, body, status);
     }
@@ -76,31 +76,31 @@ export class ExceptionFilterHttp implements ExceptionFilter {
     const { status, body } =
       exception instanceof HttpException
         ? {
-            status:
+          status:
               exception.getStatus() === undefined ? 500 : exception.getStatus(),
-            // body: exception.getResponse(),
-            body: {
-              status:
+          // body: exception.getResponse(),
+          body: {
+            status:
                 exception.getStatus() === undefined
                   ? 500
                   : exception.getStatus(),
-              data: [],
-              timestamp: new Date().getTime(),
-              message: exception.message,
-              return: '',
-            },
-          }
+            data: [],
+            timestamp: new Date().getTime(),
+            message: exception.message,
+            return: "",
+          },
+        }
         : {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          body: {
             status: HttpStatus.INTERNAL_SERVER_ERROR,
-            body: {
-              status: HttpStatus.INTERNAL_SERVER_ERROR,
-              data: [],
-              timestamp: new Date().getTime(),
-              message: exception.message,
-              return: 'Internal Server Error',
-              path: request.path,
-            },
-          };
+            data: [],
+            timestamp: new Date().getTime(),
+            message: exception.message,
+            return: "Internal Server Error",
+            path: request.path,
+          },
+        };
     return this.httpAdapter.reply(response, body, status);
   }
 }

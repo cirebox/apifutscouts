@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from "@nestjs/common";
 
 @Injectable()
 export class CampeonatoOpcoesService {
@@ -6,14 +6,14 @@ export class CampeonatoOpcoesService {
 
   async execute(): Promise<string[]> {
     return [
-      'carioca',
-      'brasileiro',
-      'libertadores',
-      'supercopa-do-brasil',
-      'copa-do-brasil',
-      'mundial',
-      'recopa',
-      'sulamericana',
+      "carioca",
+      "brasileiro",
+      "libertadores",
+      "supercopa-do-brasil",
+      "copa-do-brasil",
+      "mundial",
+      "recopa",
+      "sulamericana",
     ];
   }
 }

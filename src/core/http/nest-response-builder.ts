@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import { NestResponse } from './nest-response';
+import { NestResponse } from "./nest-response";
 
 export class NestResponseBuilder {
   private response: NestResponse = {
@@ -13,12 +12,12 @@ export class NestResponseBuilder {
     return this;
   }
 
-  public setHeaders(headers: Object) {
+  public setHeaders(headers: object) {
     this.response.headers = headers;
     return this;
   }
 
-  public setBody(body: Object) {
+  public setBody(body: object) {
     this.response.body = body;
     return this;
   }

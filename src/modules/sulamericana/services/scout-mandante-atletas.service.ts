@@ -1,30 +1,29 @@
-import { map } from 'rxjs/operators';
-import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { IAPIFutebolProvider } from 'src/modules/shared/providers/interfaces/iapifutebol-provider';
-import { GlobalService } from 'src/modules/shared/services/global.services';
+import { Inject, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { IAPIFutebolProvider } from "src/modules/shared/providers/interfaces/iapifutebol-provider";
+import { GlobalService } from "src/modules/shared/services/global.services";
 
 @Injectable()
 export class ScoutMandanteAtletasService {
   constructor(
     private readonly globalService: GlobalService,
-    @Inject('IAPIFutebolProvider')
+    @Inject("IAPIFutebolProvider")
     private readonly apiFutebolProvider: IAPIFutebolProvider,
-  ) {}
+  ) { }
 
   private readonly logger = new Logger(ScoutMandanteAtletasService.name);
 
   async execute(): Promise<Futebol.ScoutJogador[]> {
     try {
       if (!this.globalService.campeonatoId) {
-        throw new NotFoundException('Nenhum campeonato foi definido');
+        throw new NotFoundException("Nenhum campeonato foi definido");
       }
 
       if (!this.globalService.partidaId) {
-        throw new NotFoundException('Nenhuma partida foi definida');
+        throw new NotFoundException("Nenhuma partida foi definida");
       }
 
       if (!this.globalService.equipeId) {
-        throw new NotFoundException('Nenhuma equipe foi definida');
+        throw new NotFoundException("Nenhuma equipe foi definida");
       }
 
       const response = await this.apiFutebolProvider.scoutAtletas();
@@ -36,9 +35,9 @@ export class ScoutMandanteAtletasService {
             (value) => value.id === obj.idJogador,
           )[0];
 
-          let posicao = 'Desconhecido';
-          let nome = 'Desconhecido';
-          let numero = 'Desconhecido';
+          let posicao = "Desconhecido";
+          let nome = "Desconhecido";
+          let numero = "Desconhecido";
           if (jogador) {
             posicao = jogador.posicao;
             nome = jogador.name;
@@ -48,13 +47,13 @@ export class ScoutMandanteAtletasService {
           const data: Futebol.ScoutJogador = {
             idJogador: obj.idJogador,
             foto:
-              process.env.DIR_IMAGES_SCOUT + obj.idJogador.toString() + '.png',
+              process.env.DIR_IMAGES_SCOUT + obj.idJogador.toString() + ".png",
             heatmap:
               process.env.DIR_IMAGES_HEATMAP +
               obj.idJogador.toString() +
-              '.png',
+              ".png",
             nome:
-              process.env.DIR_IMAGES_NOME + obj.idJogador.toString() + '.png',
+              process.env.DIR_IMAGES_NOME + obj.idJogador.toString() + ".png",
             posicao: posicao,
             name: nome,
             numero: numero,
@@ -66,7 +65,7 @@ export class ScoutMandanteAtletasService {
             passeCerto: obj.passeCerto,
             passesErrado: obj.passeErrado,
             totalPasses: obj.passeCerto + obj.passeErrado,
-            possebola: obj.posseDeBola + '%',
+            possebola: obj.posseDeBola + "%",
             dribleCerto: obj.dribleCerto,
             faltaCometida: obj.faltaCometida,
             faltaRecebida: obj.faltaRecebida,
@@ -97,7 +96,7 @@ export class ScoutMandanteAtletasService {
       );
       return retorno;
     } catch (error) {
-      this.logger.error('Erro ao puxar scout de atletas mandante');
+      this.logger.error("Erro ao puxar scout de atletas mandante");
       console.log(error);
       throw error;
     }

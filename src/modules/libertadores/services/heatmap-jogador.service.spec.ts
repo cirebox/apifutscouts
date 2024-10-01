@@ -1,7 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { HeatmapJogadorService } from './heatmap-jogador.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { HeatmapJogadorService } from "./heatmap-jogador.service";
 
-describe('HeatmapJogadorService', () => {
+describe("HeatmapJogadorService", () => {
   let service: HeatmapJogadorService;
 
   beforeEach(async () => {
@@ -12,7 +12,7 @@ describe('HeatmapJogadorService', () => {
     service = module.get<HeatmapJogadorService>(HeatmapJogadorService);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 });

@@ -1,7 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { HeatmapAtletaByIdService } from './heatmap-atleta-by-id.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { HeatmapAtletaByIdService } from "./heatmap-atleta-by-id.service";
 
-describe('HeatmapAtletaByIdService', () => {
+describe("HeatmapAtletaByIdService", () => {
   let service: HeatmapAtletaByIdService;
 
   beforeEach(async () => {
@@ -12,7 +12,7 @@ describe('HeatmapAtletaByIdService', () => {
     service = module.get<HeatmapAtletaByIdService>(HeatmapAtletaByIdService);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 });

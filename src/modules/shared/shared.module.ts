@@ -1,9 +1,9 @@
-import { HttpModule } from '@nestjs/axios';
-import { Global, Module } from '@nestjs/common';
-import { BearerMiddleware } from './middlewares/bearer.middleware';
-import { NestResponseBuilder } from './../../core/http/nest-response-builder';
-import { APIFutebolProvider } from './providers/http/http-apifutebol.provider';
-import { GlobalService } from './services/global.services';
+import { HttpModule } from "@nestjs/axios";
+import { Global, Module } from "@nestjs/common";
+import { BearerMiddleware } from "./middlewares/bearer.middleware";
+import { NestResponseBuilder } from "./../../core/http/nest-response-builder";
+import { APIFutebolProvider } from "./providers/http/http-apifutebol.provider";
+import { GlobalService } from "./services/global.services";
 
 @Global()
 @Module({
@@ -13,7 +13,7 @@ import { GlobalService } from './services/global.services';
     NestResponseBuilder,
     GlobalService,
     {
-      provide: 'IAPIFutebolProvider',
+      provide: "IAPIFutebolProvider",
       useClass: APIFutebolProvider,
     },
   ],
@@ -22,9 +22,9 @@ import { GlobalService } from './services/global.services';
     NestResponseBuilder,
     GlobalService,
     {
-      provide: 'IAPIFutebolProvider',
+      provide: "IAPIFutebolProvider",
       useClass: APIFutebolProvider,
     },
   ],
 })
-export class SharedModule { }
+export class SharedModule {}

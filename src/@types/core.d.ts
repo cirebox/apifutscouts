@@ -1,8 +1,7 @@
 declare namespace Core {
   interface NestResponse {
     status: number | any;
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    headers: Object;
+    headers: object;
     data: any;
   }
 

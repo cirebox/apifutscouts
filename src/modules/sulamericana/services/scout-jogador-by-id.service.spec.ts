@@ -1,7 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { ScoutJogadorByIdService } from './scout-jogador-by-id.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { ScoutJogadorByIdService } from "./scout-jogador-by-id.service";
 
-describe('ScoutJogadorByIdService', () => {
+describe("ScoutJogadorByIdService", () => {
   let service: ScoutJogadorByIdService;
 
   beforeEach(async () => {
@@ -12,7 +12,7 @@ describe('ScoutJogadorByIdService', () => {
     service = module.get<ScoutJogadorByIdService>(ScoutJogadorByIdService);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 });
