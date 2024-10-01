@@ -8,7 +8,7 @@
     "test/": true,
     "pnpm-lock.yaml": false,
     "dist/": true,
-    ".eslintrc.js": true,
+    ".eslintrc.js": false,
     ".prettierrc": true,
     "windows/": true,
     "android/": false,
